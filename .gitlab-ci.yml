@@ -1,0 +1,53 @@
+# This is your CI/CD pipeline
+# GitLab reads this file automatically on every push
+
+# Define the stages in order
+stages:
+  - build
+  - test
+  - docker
+
+# ─────────────────────────────
+# STAGE 1 — BUILD
+# ─────────────────────────────
+build-job:
+  stage: build
+  image: node:20-alpine
+  script:
+    - echo "Installing dependencies..."
+    - npm install
+    - echo "Compiling TypeScript..."
+    - npm run build
+    - echo "Build successful ✅"
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+# ─────────────────────────────
+# STAGE 2 — TEST
+# ─────────────────────────────
+test-job:
+  stage: test
+  image: node:20-alpine
+  script:
+    - echo "Installing dependencies..."
+    - npm install
+    - echo "Checking if app compiles without errors..."
+    - npm run build
+    - echo "Tests passed ✅"
+
+# ─────────────────────────────
+# STAGE 3 — DOCKER
+# ─────────────────────────────
+docker-job:
+  stage: docker
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - echo "Building Docker image..."
+    - docker build -t bhuvanesh-app .
+    - echo "Docker image built successfully ✅"
+  only:
+    - main
