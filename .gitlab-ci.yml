@@ -18,7 +18,7 @@ build-job:
     - npm install
     - echo "Compiling TypeScript..."
     - npm run build
-    - echo "Build successful ✅"
+    - echo "Build successful"
   artifacts:
     paths:
       - dist/
@@ -35,7 +35,7 @@ test-job:
     - npm install
     - echo "Checking if app compiles without errors..."
     - npm run build
-    - echo "Tests passed ✅"
+    - echo "Tests passed"
 
 # ─────────────────────────────
 # STAGE 3 — DOCKER
@@ -48,6 +48,6 @@ docker-job:
   script:
     - echo "Building Docker image..."
     - docker build -t bhuvanesh-app .
-    - echo "Docker image built successfully ✅"
+    - echo "Docker image built successfully"
   only:
     - main
