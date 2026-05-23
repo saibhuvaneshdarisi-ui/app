@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Your Express app
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=bhuvanesh
+      - DB_PASSWORD=password123
+      - DB_NAME=myappdb
+    depends_on:
+      - postgres
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=bhuvanesh
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=myappdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+# Named volume to persist DB data
+volumes:
+  pgdata:
